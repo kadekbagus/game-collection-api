@@ -1,5 +1,6 @@
 import os
 from flask import Flask, jsonify, abort, make_response, request
+from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 
@@ -24,8 +25,21 @@ tasks = [
     }
 ]
 
+# mysql config
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'lomax64'
+app.config['MYSQL_DB'] = 'ps4-game-collection'
+app.config['MYSQL_CURSOR'] = 'DictCursor'
+
+mysql = MySQL(app)
+
 @app.route('/')
 def home():
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO ps4-games(title) VALUES(%s)", "uncharted 4")
+    mysql.connection.commit()
+    cur.close()
     return "hello kadek, it's working!"
 
 @app.route('/ps4-games/api/v1/list', methods=['GET'])
