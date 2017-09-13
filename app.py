@@ -8,19 +8,19 @@ tasks = [
     {
         'id': 1,
         'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
+        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
         'done': False
     },
     {
         'id': 2,
         'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
+        'description': u'Need to find a good Python tutorial on the web',
         'done': False
     },
     {
         'id': 3,
         'title': u'Get Laid',
-        'description': u'Find a beautiful girl and get laid', 
+        'description': u'Find a beautiful girl and get laid',
         'done': False
     }
 ]
@@ -28,8 +28,8 @@ tasks = [
 # mysql config
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'lomax64'
-app.config['MYSQL_DB'] = 'ps4-game-collection'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'ps4_game_collection'
 app.config['MYSQL_CURSOR'] = 'DictCursor'
 
 mysql = MySQL(app)
@@ -37,7 +37,7 @@ mysql = MySQL(app)
 @app.route('/')
 def home():
     cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO ps4-games(title) VALUES(%s)", "uncharted 4")
+    cur.execute("INSERT INTO ps4_games (title) VALUES(%s)", ["uncharted 4"])
     mysql.connection.commit()
     cur.close()
     return "hello kadek, it's working!"
