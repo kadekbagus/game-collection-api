@@ -36,10 +36,6 @@ mysql = MySQL(app)
 
 @app.route('/')
 def home():
-    cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO ps4_games (title, genre, exclusive) VALUES(%s, %s, %s)", ['uncharted 4', 'action adventure', 'yes'])
-    mysql.connection.commit()
-    cur.close()
     return "hello kadek, it's working!"
 
 @app.route('/ps4-games/api/v1/list', methods=['GET'])
@@ -60,7 +56,7 @@ def create_task():
         abort(404)
     if not 'release_date' in request.json:
         return jsonify('error'), 201
-        
+
     title = request.json['title']
     genre = request.json.get('genre', "")
     exclusive = request.json.get('exclusive', "")
