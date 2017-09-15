@@ -55,10 +55,10 @@ def get_tasks():
 
 @app.route('/ps4-games/api/v1/detail/<int:id>', methods=['GET'])
 def get_task(id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    return jsonify({'task': task[0]})
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM ps4_games WHERE id = %s", [id])
+    game = cur.fetchone()
+    return jsonify({'data': game})
 
 
 @app.route('/ps4-games/api/v1/create', methods=['POST'])
