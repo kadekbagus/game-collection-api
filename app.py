@@ -36,10 +36,22 @@ mysql = MySQL(app)
 
 @app.route('/')
 def home():
-    return "hello kadek, it's working!"
+    return jsonify({'message' : "hello kadek, it's working!"}), 200
 
 @app.route('/ps4-games/api/v1/list', methods=['GET'])
 def get_tasks():
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM ps4_games")
+    games = cur.fetchall()
+
+    if result > 0:
+        return jsonify(games)
+    else:
+        msg = 'no ps4 game found'
+        return jsonify(msg)
+    cur.close()
+
+
     return jsonify({'tasks': tasks})
 
 @app.route('/ps4-games/api/v1/detail/<int:task_id>', methods=['GET'])
@@ -104,4 +116,4 @@ def not_found(error):
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
