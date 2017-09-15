@@ -28,7 +28,7 @@ tasks = [
 # mysql config
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = 'lomax64'
 app.config['MYSQL_DB'] = 'ps4_game_collection'
 app.config['MYSQL_CURSOR'] = 'DictCursor'
 
@@ -36,10 +36,6 @@ mysql = MySQL(app)
 
 @app.route('/')
 def home():
-    cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO ps4_games (title) VALUES(%s)", ["uncharted 4"])
-    mysql.connection.commit()
-    cur.close()
     return "hello kadek, it's working!"
 
 @app.route('/ps4-games/api/v1/list', methods=['GET'])
@@ -57,15 +53,24 @@ def get_task(task_id):
 @app.route('/ps4-games/api/v1/create', methods=['POST'])
 def create_task():
     if not request.json or not 'title' in request.json:
-        abort(400)
-    task = {
-        'id': tasks[-1]['id'] + 1,
-        'title': request.json['title'],
-        'description': request.json.get('description', ""),
-        'done': False
-    }
-    tasks.append(task)
-    return jsonify({'task': task}), 201
+        abort(404)
+    if not 'release_date' in request.json:
+        return jsonify('error'), 201
+
+    title = request.json['title']
+    genre = request.json.get('genre', "")
+    exclusive = request.json.get('exclusive', "")
+    developer = request.json.get('developer', "")
+    publisher = request.json.get('publisher', "")
+    image_link = request.json.get('image_link', "")
+    release_date = request.json.get('release_date')
+    created_by = 1
+
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO ps4_games (title, genre, exclusive, developer, publisher, image_link, release_date, created_by) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", [title, genre, exclusive, developer, publisher, image_link, release_date, created_by])
+    mysql.connection.commit()
+    cur.close()
+    return jsonify('success'), 201
 
 @app.route('/ps4-games/api/v1/update/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
