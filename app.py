@@ -51,11 +51,10 @@ def get_tasks():
         return jsonify(msg)
     cur.close()
 
-
     return jsonify({'tasks': tasks})
 
-@app.route('/ps4-games/api/v1/detail/<int:task_id>', methods=['GET'])
-def get_task(task_id):
+@app.route('/ps4-games/api/v1/detail/<int:id>', methods=['GET'])
+def get_task(id):
     task = [task for task in tasks if task['id'] == task_id]
     if len(task) == 0:
         abort(404)
@@ -102,12 +101,12 @@ def update_task(task_id):
     task[0]['done'] = request.json.get('done', task[0]['done'])
     return jsonify({'task': task[0]})
 
-@app.route('/ps4-games/api/v1/delete/<int:task_id>', methods=['DELETE'])
-def delete_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    tasks.remove(task[0])
+@app.route('/ps4-games/api/v1/delete/<int:id>', methods=['DELETE'])
+def delete_task(id):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM ps4_games WHERE id = %s", [id])
+    mysql.connection.commit()
+    cur.close()
     return jsonify({'result': True})
 
 @app.errorhandler(404)
