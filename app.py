@@ -1,6 +1,7 @@
 import os
-from flask import Flask, jsonify, abort, make_response, request
+from flask import Flask, jsonify, abort, make_response, request, json
 from flask_mysqldb import MySQL
+from pprint import pprint
 
 app = Flask(__name__)
 
@@ -30,7 +31,7 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'lomax64'
 app.config['MYSQL_DB'] = 'ps4_game_collection'
-app.config['MYSQL_CURSOR'] = 'DictCursor'
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
@@ -42,23 +43,25 @@ def home():
 def get_tasks():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM ps4_games")
-    games = cur.fetchall()
+    result_set = cur.fetchall()
 
-    if result > 0:
-        return jsonify(games)
+    if result_set > 0:
+        return jsonify(result_set), 200
     else:
         msg = 'no ps4 game found'
-        return jsonify(msg)
-    cur.close()
-
-    return jsonify({'tasks': tasks})
+        return jsonify(msg), 200
 
 @app.route('/ps4-games/api/v1/detail/<int:id>', methods=['GET'])
 def get_task(id):
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM ps4_games WHERE id = %s", [id])
-    game = cur.fetchone()
-    return jsonify({'data': game})
+    result_set = cur.fetchone()
+    
+    if result_set > 0:
+        return jsonify(result_set), 200
+    else:
+        msg = 'no ps4 game found'
+        return jsonify(msg), 200
 
 
 @app.route('/ps4-games/api/v1/create', methods=['POST'])
@@ -107,7 +110,7 @@ def delete_task(id):
     cur.execute("DELETE FROM ps4_games WHERE id = %s", [id])
     mysql.connection.commit()
     cur.close()
-    return jsonify({'result': True})
+    return jsonify({'success'}), 200
 
 @app.errorhandler(404)
 def not_found(error):
