@@ -1,11 +1,14 @@
 # ps4-games-api
-PS4 games collection API made using Python Flask
+PS4 games collection API made using Python Flask, this API is just small part of a bigger application.
+This API just demonstrate CRUD funtionality.
 
 
-## database table
+### Database table
+this API is using MySQL database with one table called ps4_games for storing game data
+such as title, genre, game developer, publisher, etc.
 ```
 CREATE TABLE `ps4_games` (
-  `ps4_game_id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `title` varchar(500) NOT NULL,
   `genre` varchar(255) DEFAULT NULL,
   `exclusive` char(3) DEFAULT NULL,
@@ -18,4 +21,19 @@ CREATE TABLE `ps4_games` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+### How to Setup
+```
+pip install Flask
+pip install flask-mysqldb
+
+for ubuntu:
+sudo apt-get install python-dev
+sudo apt-get install libmysqlclient-dev
+```
+
+### How to run
+```
+python app.py
 ```
