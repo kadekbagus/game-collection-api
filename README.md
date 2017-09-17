@@ -2,6 +2,35 @@
 PS4 games collection API made using Python Flask, this API is just small part of a bigger application.
 This API just demonstrate CRUD funtionality.
 
+### List APIs
+
+API for Create/Add game data
+`ps4-games/api/v1/create` METHOD: POST, Input: JSON
+sample JSON input:
+```
+{
+  "title":"Drive Club",
+  "genre":"Racing",
+  "developer":"Evolution Studios",
+  "publisher":"Sony Computer Entertainment",
+  "release_date":"2014-10-07",
+  "image_link":"https://upload.wikimedia.org/wikipedia/en/thumb/6/6f/Driveclub_box_art.jpg/250px-Driveclub_box_art.jpg"
+}
+```
+
+API for showing list games
+`ps4-games/api/v1/list' METHOD: GET
+
+API for showing single game data
+`ps4-games/api/v1/detail/<integer:Id>` METHOD: POST
+
+API for delete game data
+`ps4-games/api/v1/delete/<integer:Id>` METHOD: DELETE
+
+API for Update game data
+`ps4-games/api/v1/update/<integer:Id>` METHOD: PUT, Input: JSON (format same as API create)
+
+
 
 ### Database table
 this API is using MySQL database with one table called ps4_games for storing game data
@@ -23,7 +52,7 @@ CREATE TABLE `ps4_games` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
-### How to Setup
+### How to setup
 ```
 pip install Flask
 pip install flask-mysqldb
