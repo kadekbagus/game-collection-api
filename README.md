@@ -4,8 +4,10 @@ This API just demonstrate CRUD funtionality.
 
 ### List APIs
 
-API for Create/Add game data
-`ps4-games/api/v1/create` METHOD: POST, Input: JSON
+API for Create/Add game data  
+
+`ps4-games/api/v1/create` METHOD: POST, Input: JSON  
+
 sample JSON input:
 ```
 {
@@ -18,17 +20,25 @@ sample JSON input:
 }
 ```
 
-API for showing list games
-`ps4-games/api/v1/list' METHOD: GET
+API for showing list games  
 
-API for showing single game data
-`ps4-games/api/v1/detail/<integer:Id>` METHOD: POST
+`ps4-games/api/v1/list' METHOD: GET  
 
-API for delete game data
-`ps4-games/api/v1/delete/<integer:Id>` METHOD: DELETE
 
-API for Update game data
-`ps4-games/api/v1/update/<integer:Id>` METHOD: PUT, Input: JSON (format same as API create)
+API for showing single game data  
+
+`ps4-games/api/v1/detail/<integer:Id>` METHOD: POST  
+
+
+API for delete game data  
+
+`ps4-games/api/v1/delete/<integer:Id>` METHOD: DELETE  
+
+
+API for Update game data  
+
+`ps4-games/api/v1/update/<integer:Id>` METHOD: PUT, Input: JSON (format same as API create)  
+
 
 
 
