@@ -1,7 +1,6 @@
 import os
-from flask import Flask, jsonify, abort, make_response, request, json
+from flask import Flask, jsonify, abort, make_response, request
 from flask_mysqldb import MySQL
-from pprint import pprint
 
 app = Flask(__name__)
 
@@ -56,7 +55,7 @@ def get_task(id):
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM ps4_games WHERE id = %s", [id])
     result_set = cur.fetchone()
-    
+
     if result_set > 0:
         return jsonify(result_set), 200
     else:
@@ -69,7 +68,7 @@ def create_task():
     if not request.json or not 'title' in request.json:
         abort(404)
     if not 'release_date' in request.json:
-        return jsonify('error'), 201
+        return jsonify('release_date not found in the json'), 201
 
     title = request.json['title']
     genre = request.json.get('genre', "")
@@ -86,23 +85,26 @@ def create_task():
     cur.close()
     return jsonify('success'), 201
 
-@app.route('/ps4-games/api/v1/update/<int:task_id>', methods=['PUT'])
-def update_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
+@app.route('/ps4-games/api/v1/update/<int:id>', methods=['PUT'])
+def update_task(id):
+    if not request.json or not 'title' in request.json:
         abort(404)
-    if not request.json:
-        abort(400)
-    if 'title' in request.json and type(request.json['title']) != unicode:
-        abort(400)
-    if 'description' in request.json and type(request.json['description']) is not unicode:
-        abort(400)
-    if 'done' in request.json and type(request.json['done']) is not bool:
-        abort(400)
-    task[0]['title'] = request.json.get('title', task[0]['title'])
-    task[0]['description'] = request.json.get('description', task[0]['description'])
-    task[0]['done'] = request.json.get('done', task[0]['done'])
-    return jsonify({'task': task[0]})
+
+    title = request.json['title']
+    genre = request.json.get('genre', "")
+    exclusive = request.json.get('exclusive', "")
+    developer = request.json.get('developer', "")
+    publisher = request.json.get('publisher', "")
+    image_link = request.json.get('image_link', "")
+    release_date = request.json.get('release_date')
+
+    cur = mysql.connection.cursor()
+    app.logger.info(title)
+    cur.execute ("UPDATE ps4_games SET title=%s, genre=%s, exclusive=%s, developer=%s, publisher=%s, image_link=%s WHERE id=%s", (title, genre, exclusive, developer, publisher, image_link, id))
+    mysql.connection.commit()
+    cur.close()
+
+    return jsonify('succes'), 200
 
 @app.route('/ps4-games/api/v1/delete/<int:id>', methods=['DELETE'])
 def delete_task(id):
@@ -110,7 +112,7 @@ def delete_task(id):
     cur.execute("DELETE FROM ps4_games WHERE id = %s", [id])
     mysql.connection.commit()
     cur.close()
-    return jsonify({'success'}), 200
+    return jsonify('success'), 200
 
 @app.errorhandler(404)
 def not_found(error):
