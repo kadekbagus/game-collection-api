@@ -1,0 +1,8 @@
+APP_CONFIG = {
+    "app_debug_mode" : True,
+    "mysql_host" : "localhost",
+    "mysql_user" : "root",
+    "mysql_password" : "",
+    "mysql_db" : "ps4_game_collection",
+    "mysql_cursorclass" : "DictCursor"
+}

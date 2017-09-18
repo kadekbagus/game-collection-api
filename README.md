@@ -4,9 +4,9 @@ This API just demonstrate CRUD funtionality.
 
 ### List APIs
 
-API for Create/Add game data  
+API for Create/Add game data
 
-`ps4-games/api/v1/create` METHOD: POST, Input: JSON  
+`ps4-games/api/v1/create` METHOD: POST, Input: JSON
 
 sample JSON input:
 ```
@@ -20,24 +20,24 @@ sample JSON input:
 }
 ```
 
-API for showing list games  
+API for showing list games
 
-`ps4-games/api/v1/list' METHOD: GET  
-
-
-API for showing single game data  
-
-`ps4-games/api/v1/detail/<integer:Id>` METHOD: POST  
+`ps4-games/api/v1/list' METHOD: GET
 
 
-API for delete game data  
+API for showing single game data
 
-`ps4-games/api/v1/delete/<integer:Id>` METHOD: DELETE  
+`ps4-games/api/v1/detail/<integer:Id>` METHOD: POST
 
 
-API for Update game data  
+API for delete game data
 
-`ps4-games/api/v1/update/<integer:Id>` METHOD: PUT, Input: JSON (format same as API create)  
+`ps4-games/api/v1/delete/<integer:Id>` METHOD: DELETE
+
+
+API for Update game data
+
+`ps4-games/api/v1/update/<integer:Id>` METHOD: PUT, Input: JSON (format same as API create)
 
 
 
@@ -47,7 +47,7 @@ this API is using MySQL database with one table called ps4_games for storing gam
 such as title, genre, game developer, publisher, etc.
 ```
 CREATE TABLE `ps4_games` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(500) NOT NULL,
   `genre` varchar(255) DEFAULT NULL,
   `exclusive` char(3) DEFAULT NULL,
@@ -58,7 +58,9 @@ CREATE TABLE `ps4_games` (
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_title` (`id`,`title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
