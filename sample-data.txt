@@ -4,5 +4,46 @@
   "developer":"Evolution Studios",
   "publisher":"Sony Computer Entertainment",
   "release_date":"2014-10-07",
+  "exclusive":"yes",
   "image_link":"https://upload.wikimedia.org/wikipedia/en/thumb/6/6f/Driveclub_box_art.jpg/250px-Driveclub_box_art.jpg"
+}
+
+{
+  "title":"Uncharted 4: A Thief's End",
+  "genre":"Action Adventure",
+  "developer":"Naughty Dog",
+  "publisher":"Sony Computer Entertainment",
+  "release_date":"2016-05-10",
+  "exclusive":"yes",
+  "image_link":"https://upload.wikimedia.org/wikipedia/en/thumb/1/1a/Uncharted_4_box_artwork.jpg/250px-Uncharted_4_box_artwork.jpg"
+}
+
+{
+  "title":"Metal Gear Solid V: The Phantom Pain",
+  "genre":"Action Adventure, Stealth",
+  "developer":"Kojima Productions",
+  "publisher":"Konami Digital Entertainment",
+  "release_date":"2015-09-01",
+  "exclusive":"no",
+  "image_link":"https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/Metal_Gear_Solid_V_The_Phantom_Pain_cover.png/250px-Metal_Gear_Solid_V_The_Phantom_Pain_cover.png"
+}
+
+{
+  "title":"The Last of Us Remastered",
+  "genre":"Action Adventure, Survival Horror",
+  "developer":"Naughty Dog",
+  "publisher":"Sony Computer Entertainment",
+  "release_date":"2014-07-29",
+  "exclusive":"yes",
+  "image_link":"https://upload.wikimedia.org/wikipedia/en/thumb/5/58/The_Last_of_Us_Remastered.jpg/250px-The_Last_of_Us_Remastered.jpg"
+}
+
+{
+  "title":"Grand Theft Auto V",
+  "genre":"Action Adventure",
+  "developer":"Rockstar North",
+  "publisher":"Rockstar Games",
+  "release_date":"2014-10-18",
+  "exclusive":"no",
+  "image_link":"https://upload.wikimedia.org/wikipedia/en/thumb/a/a5/Grand_Theft_Auto_V.png/250px-Grand_Theft_Auto_V.png"
 }
