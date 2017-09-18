@@ -30,24 +30,37 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'lomax64'
 app.config['MYSQL_DB'] = 'ps4_game_collection'
-app.config['MYSQL_CURSOR'] = 'DictCursor'
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 mysql = MySQL(app)
 
 @app.route('/')
 def home():
-    return "hello kadek, it's working!"
+    return jsonify({'message' : "hello kadek, it's working!"}), 200
 
 @app.route('/ps4-games/api/v1/list', methods=['GET'])
 def get_tasks():
-    return jsonify({'tasks': tasks})
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM ps4_games")
+    result_set = cur.fetchall()
 
-@app.route('/ps4-games/api/v1/detail/<int:task_id>', methods=['GET'])
-def get_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    return jsonify({'task': task[0]})
+    if result_set > 0:
+        return jsonify(result_set), 200
+    else:
+        msg = 'no ps4 game found'
+        return jsonify(msg), 200
+
+@app.route('/ps4-games/api/v1/detail/<int:id>', methods=['GET'])
+def get_task(id):
+    cur = mysql.connection.cursor()
+    result = cur.execute("SELECT * FROM ps4_games WHERE id = %s", [id])
+    result_set = cur.fetchone()
+
+    if result_set > 0:
+        return jsonify(result_set), 200
+    else:
+        msg = 'no ps4 game found'
+        return jsonify(msg), 200
 
 
 @app.route('/ps4-games/api/v1/create', methods=['POST'])
@@ -55,7 +68,7 @@ def create_task():
     if not request.json or not 'title' in request.json:
         abort(404)
     if not 'release_date' in request.json:
-        return jsonify('error'), 201
+        return jsonify('release_date not found in the json'), 201
 
     title = request.json['title']
     genre = request.json.get('genre', "")
@@ -72,31 +85,34 @@ def create_task():
     cur.close()
     return jsonify('success'), 201
 
-@app.route('/ps4-games/api/v1/update/<int:task_id>', methods=['PUT'])
-def update_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
+@app.route('/ps4-games/api/v1/update/<int:id>', methods=['PUT'])
+def update_task(id):
+    if not request.json or not 'title' in request.json:
         abort(404)
-    if not request.json:
-        abort(400)
-    if 'title' in request.json and type(request.json['title']) != unicode:
-        abort(400)
-    if 'description' in request.json and type(request.json['description']) is not unicode:
-        abort(400)
-    if 'done' in request.json and type(request.json['done']) is not bool:
-        abort(400)
-    task[0]['title'] = request.json.get('title', task[0]['title'])
-    task[0]['description'] = request.json.get('description', task[0]['description'])
-    task[0]['done'] = request.json.get('done', task[0]['done'])
-    return jsonify({'task': task[0]})
 
-@app.route('/ps4-games/api/v1/delete/<int:task_id>', methods=['DELETE'])
-def delete_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    tasks.remove(task[0])
-    return jsonify({'result': True})
+    title = request.json['title']
+    genre = request.json.get('genre', "")
+    exclusive = request.json.get('exclusive', "")
+    developer = request.json.get('developer', "")
+    publisher = request.json.get('publisher', "")
+    image_link = request.json.get('image_link', "")
+    release_date = request.json.get('release_date')
+
+    cur = mysql.connection.cursor()
+    app.logger.info(title)
+    cur.execute ("UPDATE ps4_games SET title=%s, genre=%s, exclusive=%s, developer=%s, publisher=%s, image_link=%s WHERE id=%s", (title, genre, exclusive, developer, publisher, image_link, id))
+    mysql.connection.commit()
+    cur.close()
+
+    return jsonify('succes'), 200
+
+@app.route('/ps4-games/api/v1/delete/<int:id>', methods=['DELETE'])
+def delete_task(id):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM ps4_games WHERE id = %s", [id])
+    mysql.connection.commit()
+    cur.close()
+    return jsonify('success'), 200
 
 @app.errorhandler(404)
 def not_found(error):
@@ -104,4 +120,4 @@ def not_found(error):
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
