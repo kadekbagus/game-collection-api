@@ -25,6 +25,7 @@ def get_tasks():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM ps4_games")
     result_set = cur.fetchall()
+    cur.close()
 
     if result > 0:
         return jsonify(result_set), 200
@@ -37,6 +38,7 @@ def get_task(id):
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM ps4_games WHERE id = %s", [id])
     result_set = cur.fetchone()
+    cur.close()
 
     if result_set > 0:
         return jsonify(result_set), 200
