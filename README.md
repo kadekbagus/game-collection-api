@@ -1,6 +1,6 @@
 # ps4-games-api
 PS4 games collection API made using Python Flask,
-This API just demonstrate CRUD (Create,Read,Update,Delete) functionality, but this API is just small part of a bigger application that i will develop later.
+what this API does is just demonstrate CRUD (Create,Read,Update,Delete) functionality, this API is actually just small part of a bigger application that i will develop later.
 
 ### List APIs
 
@@ -20,7 +20,7 @@ sample JSON input (for create and update API):
   "developer":"Evolution Studios",
   "publisher":"Sony Computer Entertainment",
   "release_date":"2014-10-07",
-  "exclusive":"yes"
+  "exclusive":"yes",
   "image_link":"https://upload.wikimedia.org/wikipedia/en/thumb/6/6f/Driveclub_box_art.jpg/250px-Driveclub_box_art.jpg"
 }
 ```
@@ -60,6 +60,21 @@ for ubuntu:
 sudo apt-get install python-dev
 sudo apt-get install libmysqlclient-dev
 ```
+
+### Configuration
+Copy the `config.py.sample` into `config.py` and edit the content based on your configuration.
+
+```
+APP_CONFIG = {
+    "app_debug_mode" : True,
+    "mysql_host" : "localhost",
+    "mysql_user" : "root",
+    "mysql_password" : "",
+    "mysql_db" : "ps4_game_collection",
+    "mysql_cursorclass" : "DictCursor"
+}
+```
+
 
 ### How to run
 ```
