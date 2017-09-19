@@ -1,6 +1,6 @@
 # ps4-games-api
-PS4 games collection API made using Python Flask, this API is just small part of a bigger application.
-This API just demonstrate CRUD funtionality.
+PS4 games collection API made using Python Flask,
+This API just demonstrate CRUD (Create,Read,Update,Delete) functionality, but this API is just small part of a bigger application that i will develop later.
 
 ### List APIs
 
