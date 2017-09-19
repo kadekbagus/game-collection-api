@@ -1,9 +1,10 @@
 import os
 from flask import Flask, jsonify, abort, make_response, request
 from flask_mysqldb import MySQL
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-
+CORS(app, support_credentials=True)
 app.config.from_pyfile('config.py')
 APP_CONFIG = app.config['APP_CONFIG']
 
@@ -21,14 +22,20 @@ def home():
     return jsonify({'message' : "hello kadek, it's working!"}), 200
 
 @app.route('/ps4-games/api/v1/list', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_tasks():
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM ps4_games")
     result_set = cur.fetchall()
     cur.close()
 
+    data = [{
+        'total_records': len(result_set),
+        'data': result_set
+    }]
+
     if result > 0:
-        return jsonify(result_set), 200
+        return jsonify(data), 200
     else:
         msg = 'no ps4 game found'
         return jsonify({'message': msg}), 200
@@ -46,7 +53,6 @@ def get_task(id):
         msg = 'no ps4 game found'
         return jsonify({'message': msg}), 200
 
-
 @app.route('/ps4-games/api/v1/create', methods=['POST'])
 def create_task():
     if not request.json or not 'title' in request.json:
@@ -56,7 +62,7 @@ def create_task():
 
     title = request.json['title']
     genre = request.json.get('genre', "")
-    exclusive = request.json.get('exclusive', "")
+    exclusive = request.json.get('exclusive', "no")
     developer = request.json.get('developer', "")
     publisher = request.json.get('publisher', "")
     image_link = request.json.get('image_link', "")
@@ -76,7 +82,7 @@ def update_task(id):
 
     title = request.json['title']
     genre = request.json.get('genre', "")
-    exclusive = request.json.get('exclusive', "")
+    exclusive = request.json.get('exclusive', "no")
     developer = request.json.get('developer', "")
     publisher = request.json.get('publisher', "")
     image_link = request.json.get('image_link', "")
