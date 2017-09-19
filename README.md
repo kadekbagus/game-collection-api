@@ -4,11 +4,15 @@ This API just demonstrate CRUD (Create,Read,Update,Delete) functionality, but th
 
 ### List APIs
 
-API for Create/Add game data
+| URI                          | HTTP METHOD | Action                 |
+|------------------------------|-------------|------------------------|
+| ps4-games/api/v1/list        |     GET     | show list of data      |
+| ps4-games/api/v1/detail/[id] |     GET     | show single data by id |
+| ps4-games/api/v1/create      |     POST    | create/add new data    |
+| ps4-games/api/v1/update/[id] |     PUT     | update data by id      |
+| ps4-games/api/v1/delete/[id] |    DELETE   | delete data by id      |
 
-`ps4-games/api/v1/create` METHOD: POST, Input: JSON
-
-sample JSON input:
+sample JSON input (for create and update API):
 ```
 {
   "title":"Drive Club",
@@ -16,28 +20,11 @@ sample JSON input:
   "developer":"Evolution Studios",
   "publisher":"Sony Computer Entertainment",
   "release_date":"2014-10-07",
+  "exclusive":"yes"
   "image_link":"https://upload.wikimedia.org/wikipedia/en/thumb/6/6f/Driveclub_box_art.jpg/250px-Driveclub_box_art.jpg"
 }
 ```
 
-API for showing list games
-
-`ps4-games/api/v1/list' METHOD: GET
-
-
-API for showing single game data
-
-`ps4-games/api/v1/detail/<integer:Id>` METHOD: POST
-
-
-API for delete game data
-
-`ps4-games/api/v1/delete/<integer:Id>` METHOD: DELETE
-
-
-API for Update game data
-
-`ps4-games/api/v1/update/<integer:Id>` METHOD: PUT, Input: JSON (format same as API create)
 
 
 
@@ -64,7 +51,7 @@ CREATE TABLE `ps4_games` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
-### How to setup
+### Requirements
 ```
 pip install Flask
 pip install flask-mysqldb
