@@ -18,6 +18,7 @@ app.config['MYSQL_CURSORCLASS'] = APP_CONFIG['mysql_cursorclass']
 mysql = MySQL(app)
 
 @app.route('/')
+@cross_origin(supports_credentials=True)
 def home():
     return jsonify({'message' : "hello kadek, it's working!"}), 200
 
@@ -41,6 +42,7 @@ def get_tasks():
         return jsonify({'message': msg}), 200
 
 @app.route('/ps4-games/api/v1/detail/<int:id>', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_task(id):
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM ps4_games WHERE id = %s", [id])
@@ -54,6 +56,7 @@ def get_task(id):
         return jsonify({'message': msg}), 200
 
 @app.route('/ps4-games/api/v1/create', methods=['POST'])
+@cross_origin(supports_credentials=True)
 def create_task():
     if not request.json or not 'title' in request.json:
         abort(404)
@@ -76,6 +79,7 @@ def create_task():
     return jsonify({'message':'success'}), 201
 
 @app.route('/ps4-games/api/v1/update/<int:id>', methods=['PUT'])
+@cross_origin(supports_credentials=True)
 def update_task(id):
     if not request.json or not 'title' in request.json:
         abort(404)
@@ -97,6 +101,7 @@ def update_task(id):
     return jsonify({'message':'success'}), 200
 
 @app.route('/ps4-games/api/v1/delete/<int:id>', methods=['DELETE'])
+@cross_origin(supports_credentials=True)
 def delete_task(id):
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM ps4_games WHERE id = %s", [id])
@@ -105,6 +110,7 @@ def delete_task(id):
     return jsonify({'message':'success'}), 200
 
 @app.errorhandler(404)
+@cross_origin(supports_credentials=True)
 def not_found(error):
     return make_response(jsonify({'message': 'Not found'}), 404)
 
