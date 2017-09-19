@@ -55,6 +55,7 @@ CREATE TABLE `ps4_games` (
 ```
 pip install Flask
 pip install flask-mysqldb
+pip install flask flask-cors
 
 for ubuntu:
 sudo apt-get install python-dev
