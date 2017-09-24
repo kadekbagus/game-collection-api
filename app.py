@@ -25,12 +25,16 @@ def home():
 @app.route('/ps4-games/api/v1/list', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def get_tasks():
+    page = request.args.get('page', 0)
+    perpage = 5;
+    startat = int(page)*perpage
     cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM ps4_games")
+    result = cur.execute("SELECT * FROM ps4_games limit %s, %s", [startat, perpage])
     result_set = cur.fetchall()
     cur.close()
 
     data = [{
+        'page': page,
         'total_records': len(result_set),
         'data': result_set
     }]
