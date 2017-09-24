@@ -25,22 +25,27 @@ def home():
 @app.route('/ps4-games/api/v1/list', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def get_tasks():
-    page = request.args.get('page', 0)
+    page = request.args.get('page', 1)
     perpage = 5;
-    startat = int(page)*perpage
+    startat = (int(page)-1)*perpage
+
     cur = mysql.connection.cursor()
+    total = cur.execute("SELECT count(*) as total FROM ps4_games")
+    total_set = cur.fetchall()
+
     result = cur.execute("SELECT * FROM ps4_games limit %s, %s", [startat, perpage])
     result_set = cur.fetchall()
     cur.close()
 
     data = [{
         'page': page,
-        'total_records': len(result_set),
+        'total_data': total_set[0]['total'],
+        'return_data': len(result_set),
         'data': result_set
     }]
 
     if result > 0:
-        return jsonify(data), 200
+        return jsonify(data[0]), 200
     else:
         msg = 'no ps4 game found'
         return jsonify({'message': msg}), 200
