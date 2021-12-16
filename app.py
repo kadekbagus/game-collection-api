@@ -22,7 +22,7 @@ mysql = MySQL(app)
 def home():
     return jsonify({'message' : "hello kadek, it's working!"}), 200
 
-@app.route('/ps4-games/api/v1/list', methods=['GET'])
+@app.route('/video-game/api/v1/list', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def get_tasks():
     page = request.args.get('page', 1)
@@ -30,10 +30,10 @@ def get_tasks():
     startat = (int(page)-1)*perpage
 
     cur = mysql.connection.cursor()
-    total = cur.execute("SELECT count(*) as total FROM ps4_games")
+    total = cur.execute("SELECT count(*) as total FROM video_games")
     total_set = cur.fetchall()
 
-    result = cur.execute("SELECT * FROM ps4_games limit %s, %s", [startat, perpage])
+    result = cur.execute("SELECT * FROM video_games limit %s, %s", [startat, perpage])
     result_set = cur.fetchall()
     cur.close()
 
@@ -47,24 +47,24 @@ def get_tasks():
     if result > 0:
         return jsonify(data[0]), 200
     else:
-        msg = 'no ps4 game found'
+        msg = 'no game found'
         return jsonify({'message': msg}), 200
 
-@app.route('/ps4-games/api/v1/detail/<int:id>', methods=['GET'])
+@app.route('/video-game/api/v1/detail/<int:id>', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def get_task(id):
     cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM ps4_games WHERE id = %s", [id])
+    result = cur.execute("SELECT * FROM video_games WHERE id = %s", [id])
     result_set = cur.fetchone()
     cur.close()
 
     if result_set > 0:
         return jsonify(result_set), 200
     else:
-        msg = 'no ps4 game found'
+        msg = 'no game found'
         return jsonify({'message': msg}), 200
 
-@app.route('/ps4-games/api/v1/create', methods=['POST'])
+@app.route('/video-game/api/v1/create', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def create_task():
     if not request.json or not 'title' in request.json:
@@ -82,12 +82,12 @@ def create_task():
     created_by = 1
 
     cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO ps4_games (title, genre, exclusive, developer, publisher, image_link, release_date, created_by) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", [title, genre, exclusive, developer, publisher, image_link, release_date, created_by])
+    cur.execute("INSERT INTO video_games (title, genre, exclusive, developer, publisher, image_link, release_date, created_by) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", [title, genre, exclusive, developer, publisher, image_link, release_date, created_by])
     mysql.connection.commit()
     cur.close()
     return jsonify({'message':'success'}), 201
 
-@app.route('/ps4-games/api/v1/update/<int:id>', methods=['PUT'])
+@app.route('/video-game/api/v1/update/<int:id>', methods=['PUT'])
 @cross_origin(supports_credentials=True)
 def update_task(id):
     if not request.json or not 'title' in request.json:
@@ -103,17 +103,17 @@ def update_task(id):
 
     cur = mysql.connection.cursor()
     app.logger.info(title)
-    cur.execute ("UPDATE ps4_games SET title=%s, genre=%s, exclusive=%s, developer=%s, publisher=%s, image_link=%s WHERE id=%s", (title, genre, exclusive, developer, publisher, image_link, id))
+    cur.execute ("UPDATE video_games SET title=%s, genre=%s, exclusive=%s, developer=%s, publisher=%s, image_link=%s WHERE id=%s", (title, genre, exclusive, developer, publisher, image_link, id))
     mysql.connection.commit()
     cur.close()
 
     return jsonify({'message':'success'}), 200
 
-@app.route('/ps4-games/api/v1/delete/<int:id>', methods=['DELETE'])
+@app.route('/video-game/api/v1/delete/<int:id>', methods=['DELETE'])
 @cross_origin(supports_credentials=True)
 def delete_task(id):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM ps4_games WHERE id = %s", [id])
+    cur.execute("DELETE FROM video_games WHERE id = %s", [id])
     mysql.connection.commit()
     cur.close()
     return jsonify({'message':'success'}), 200

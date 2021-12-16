@@ -1,16 +1,16 @@
-# ps4-games-api
-PS4 games collection API made using Python Flask,
-what this API does is just demonstrate CRUD (Create,Read,Update,Delete) functionality, this API is actually just small part of a bigger application that i will develop later.
+# Video Games Collection API
+REST API for video game collection made using Python Flask,
+what this API does is just demonstrate CRUD (Create,Read,Update,Delete) functionality.
 
 ### List APIs
 
 | URI                          | HTTP METHOD | Action                 |
 |------------------------------|-------------|------------------------|
-| ps4-games/api/v1/list        |     GET     | show list of data      |
-| ps4-games/api/v1/detail/[id] |     GET     | show single data by id |
-| ps4-games/api/v1/create      |     POST    | create/add new data    |
-| ps4-games/api/v1/update/[id] |     PUT     | update data by id      |
-| ps4-games/api/v1/delete/[id] |    DELETE   | delete data by id      |
+| video-game/api/v1/list        |     GET     | show list of data      |
+| video-game/api/v1/detail/[id] |     GET     | show single data by id |
+| video-game/api/v1/create      |     POST    | create/add new data    |
+| video-game/api/v1/update/[id] |     PUT     | update data by id      |
+| video-game/api/v1/delete/[id] |    DELETE   | delete data by id      |
 
 sample JSON input (for create and update API):
 ```
@@ -33,7 +33,7 @@ sample JSON input (for create and update API):
 this API is using MySQL database with one table called ps4_games for storing game data
 such as title, genre, game developer, publisher, etc.
 ```
-CREATE TABLE `ps4_games` (
+CREATE TABLE `video_games` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(500) NOT NULL,
   `genre` varchar(255) DEFAULT NULL,
