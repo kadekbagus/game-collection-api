@@ -19,6 +19,7 @@ sample JSON input (for create and update API):
   "genre":"Racing",
   "developer":"Evolution Studios",
   "publisher":"Sony Computer Entertainment",
+  "platform":"ps4",
   "release_date":"2014-10-07",
   "exclusive":"yes",
   "image_link":"https://upload.wikimedia.org/wikipedia/en/thumb/6/6f/Driveclub_box_art.jpg/250px-Driveclub_box_art.jpg"
@@ -30,13 +31,14 @@ sample JSON input (for create and update API):
 
 
 ### Database table
-this API is using MySQL database with one table called ps4_games for storing game data
+this API is using MySQL database with one table called video_games for storing game data
 such as title, genre, game developer, publisher, etc.
 ```
 CREATE TABLE `video_games` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(500) NOT NULL,
   `genre` varchar(255) DEFAULT NULL,
+  `platform` varchar(255) DEFAULT NULL,
   `exclusive` char(3) DEFAULT NULL,
   `developer` varchar(255) DEFAULT NULL,
   `publisher` varchar(255) DEFAULT NULL,
@@ -71,7 +73,7 @@ APP_CONFIG = {
     "mysql_host" : "localhost",
     "mysql_user" : "root",
     "mysql_password" : "",
-    "mysql_db" : "ps4_game_collection",
+    "mysql_db" : "video_game_collection",
     "mysql_cursorclass" : "DictCursor"
 }
 ```
